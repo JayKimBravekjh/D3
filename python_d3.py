@@ -1,0 +1,91 @@
+train.head()
+print("Nulls in Oil columns: {0} => {1}".format(oil.columns.values, oil.isnull().any().values))
+print("="*70)
+print("Nulls in holiday_events columns: {0} => {1}".format(holiday_events.columns.values, holiday_events.isnull().any().values))
+print("="*70)
+print("Nulls in stores columns: {0} => {1}".format(stores.columns.values, stores.isnull().any().values))
+print("="*70)
+print("Nulls in transactions columns: {0} => {1}".format(transactions.columns.values, transactions.isnull().any().values))
+
+oil.head(3)
+stores.head(3)
+
+plt.style.use('dark_background')
+plt.figure(figsize=(15, 12))
+store_pivot = stores.dropna().pivot("store_nbr", "cluster", "store_nbr")
+ax = sns.heatmap(store_pivot, cmap='jet', annot=True, linewidths=0, linecolor='white')
+plt.title('Store numbers and the clusters they are assigned to')
+
+plt.style.use('seaborn-white')
+type_cluster = stores.groupby(['type', 'cluster']).size()
+type_cluster.unstack().plot(kind='bar', stacked=True, colormap= 'PuBu', figsize = (13, 11), grid=False)
+plt.title('Stacked Barplot of Store types and their cluster distribution', fontsize =18)
+plt.ylabel('Count of clusters in a particular store type', fontsize = 16)
+plt.show()
+
+plt.style.use('seaborn-white')
+city_cluster = stores.groupby(['city', 'type']).store_nbr.size()
+city_cluster.unstack().plot(kind='bar', stacked=True, colormap='virids', figsize=(13, 11), grid = False)
+plt.title('Stacked Barplot of Store types opened foreach city')
+plt.ylabel('Count of stores for a particular city')
+plt.show()
+
+holidary_events.head(3)
+
+plt.style.use('seaborn-dark')
+plt.style.use('dark_background')
+holiday_local_type = holiday_events.groupby(['locale_name', 'type']).size()
+holiday_local_type.unstack().plot(kind='bar', stacked=True, colormap= 'afmhot_r', figsize=(12, 10), grid=False)
+plt.title('Stacked Barplot of locale name against event type')
+plt.ylabel('Count of entries')
+plt.show()
+
+h = display(HTML(html_string))
+j = IPython.display.Javascript(js_string)
+IPython.display.dispaly_javascript(j)
+
+holiday_events.type.unique()
+
+print(transactions.head(3))
+print("="*60)
+print("There are {0} rows and {1} columns in the transactions data", format(transactions.shape[0], transactions.shape[1]))
+
+plt.style.use('seaborn-white')
+plt.figure(figsize=(13,11))
+plt.plot(transactions.date.values, transactions.transactions.values)
+plt.axvline(x='2015-12-23',color='red',alpha=0.3)
+plt.axvline(x='2016-12-23',color='red',alpha=0.3)
+plt.axvline(x='2014-12-23',color='red',alpha=0.3)
+plt.axvline(x='2013-12-23',color='red',alpha=0.3)
+plt.axvline(x='2013-05-12',color='green',alpha=0.2, linestyle= '--')
+plt.axvline(x='2015-05-10',color='green',alpha=0.2, linestyle= '--')
+plt.axvline(x='2016-05-08',color='green',alpha=0.2, linestyle= '--')
+plt.axvline(x='2014-05-11',color='green',alpha=0.2, linestyle= '--')
+plt.axvline(x='2017-05-14',color='green',alpha=0.2, linestyle= '--')
+plt.ylim(-50, 10000)
+plt.title("Distribution of transactions per day from 2013 till 2017")
+plt.ylabel('transactions per day', fontsize= 16)
+plt.xlabel('Date', fontsize= 16)
+plt.show()
+
+items.head()
+
+plt.style.use('seaborn-white')
+fam_perishable = items.groupby(['family', 'perishable']).size()
+fam_perishable.unstack().plot(kind='bar',stacked=True, colormap= 'coolwarm', figsize=(12,10),  grid=False)
+plt.title('Stacked Barplot of locale name against event type')
+plt.ylabel('Count of entries')
+plt.show()
+
+train.head()
+
+plt.style.use('seaborn-deep')
+plt.figure(figsize=(13,11))
+plt.plot(train.date.values, train.unit_sales)
+plt.ylim(-50, 10000)
+plt.ylabel('transactions per day')
+plt.xlabel('Date')
+plt.show()
+
+
+
